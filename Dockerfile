@@ -27,10 +27,7 @@ WORKDIR /var/www
 COPY . .
 
 # Set permissions
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
-RUN chmod -R 777 /var/www/storage /var/www/bootstrap/cache
-# Set ownership and permissions for entire Laravel project
-RUN chown -R www-data:www-data /var/www && chmod -R 777 /var/www
+RUN chown -R www-data:www-data /var/www /var/www/storage /var/www/bootstrap/cache
 
 # Expose php-fpm port
 EXPOSE 9000
