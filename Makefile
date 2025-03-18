@@ -25,7 +25,11 @@ seed:
 	docker-compose exec infocenter-backend php artisan db:seed --force
 
 shell:
-	docker-compose exec infocenter-backend bash
+	docker-compose exec -u 1000:1000 infocenter-backend bash
 
 serve:
 	docker-compose exec infocenter-backend php artisan serve --host=0.0.0.0 --port=8000
+
+fix-permissions:
+	docker-compose exec -u 1000:1000 infocenter-backend find /var/www -type f ! -path "/var/www/.git/*" -exec chmod 664 {} +
+	docker-compose exec -u 1000:1000 infocenter-backend find /var/www -type d ! -path "/var/www/.git*" -exec chmod 775 {} +
