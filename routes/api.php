@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Sms;
+use App\Http\Controllers\SmsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -12,10 +13,4 @@ Route::get('/', function () {
     return response()->json(['message' => 'Hello World!']);
 });
 
-Route::post('/send-sms-all', function (Request $request) {
-    Sms::create([
-        'type' => $request->type,
-        'message' => $request->message,
-    ]);
-    return response()->json(['message' => 'SMS sent!']);
-})->name('send-sms-all');
+Route::post('/send-sms-all',[SmsController::class, 'sendSmsToAll']);

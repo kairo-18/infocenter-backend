@@ -29,6 +29,6 @@ class SendSmsJob implements ShouldQueue
             'message' => $this->sms->message,
         ]);
 
-        Log::info($response->body());
+        Log::info($response->json());
     }
 }
