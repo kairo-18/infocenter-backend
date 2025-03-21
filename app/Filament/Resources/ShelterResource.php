@@ -29,14 +29,17 @@ class ShelterResource extends Resource
                 Forms\Components\TextInput::make('address')
                     ->label('Address')
                     ->required(),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Phone')
+                Forms\Components\TextInput::make('description')
+                    ->label('description')
                     ->required(),
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
                     ->required(),
                 Forms\Components\TextInput::make('longitude')
                     ->label('Longitude')
+                    ->required(),
+                Forms\Components\TextInput::make('locationLink')
+                    ->label('Location Link')
                     ->required(),
             ]);
     }
@@ -51,13 +54,16 @@ class ShelterResource extends Resource
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('longitude')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('locationLink')
                     ->searchable()
                     ->sortable(),
             ])

@@ -31,10 +31,10 @@ class PharmacyResource extends Resource
                     ->label('Address')
                     ->required()
                     ->placeholder('Enter the address of the pharmacy'),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Phone')
+                Forms\Components\Textarea::make('description')
+                    ->label('Description')
                     ->required()
-                    ->placeholder('Enter the phone number of the pharmacy'),
+                    ->placeholder('Enter the description of the pharmacy'),
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
                     ->required()
@@ -43,6 +43,10 @@ class PharmacyResource extends Resource
                     ->label('Longitude')
                     ->required()
                     ->placeholder('Enter the longitude of the pharmacy'),
+                Forms\Components\TextInput::make('locationLink')
+                    ->label('Location Link')
+                    ->required()
+                    ->placeholder('Enter the location link of the pharmacy'),
             ]);
     }
 
@@ -56,13 +60,16 @@ class PharmacyResource extends Resource
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('longitude')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('locationLink')
                     ->searchable()
                     ->sortable(),
             ])

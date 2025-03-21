@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('garbages', function (Blueprint $table) {
             $table->id();
-            $table->string('title'); 
-            $table->text('description')->nullable(); 
-            $table->enum('day', ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']);
-            $table->time('time');
+            $table->string('name');
+            $table->string('description');
+            $table->string('status');
+            $table->timestamp('time')->nullable();
             $table->timestamps();
         });
     }

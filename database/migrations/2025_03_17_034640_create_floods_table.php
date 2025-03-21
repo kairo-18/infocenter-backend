@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('severity');
-            $table->timestamp('date')->nullable();
             $table->timestamps();
         });
     }

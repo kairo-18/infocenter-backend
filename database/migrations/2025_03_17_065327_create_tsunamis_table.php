@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tsunamis', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
-            $table->dateTime('time');
-            $table->string('source');
+            $table->string('name');
+            $table->string('description');
+            $table->string('severity');
             $table->timestamps();
         });
     }

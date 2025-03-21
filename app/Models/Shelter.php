@@ -10,9 +10,10 @@ class Shelter extends Model
     [
         'name',
         'address',
-        'phone',
+        'description',
         'latitude',
         'longitude',
+        'locationLink'
     ];
 
 }

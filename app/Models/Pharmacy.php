@@ -9,8 +9,9 @@ class Pharmacy extends Model
     protected $fillable = [
         'name',
         'address',
-        'phone',
+        'description',
         'latitude',
         'longitude',
+        'locationLink'
     ];
 }
