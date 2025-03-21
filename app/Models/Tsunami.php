@@ -7,5 +7,5 @@ class Tsunami extends Model
 {
     //
 
-    protected $fillable = [ 'time', 'source', 'message'];
+    protected $fillable = [ 'name', 'description', 'severity' ];
 }

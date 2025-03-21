@@ -23,18 +23,18 @@ class PowerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
+                Forms\Components\TextInput::make('name')
                     ->label('Title')
                     ->required()
-                    ->placeholder('Enter the title of the power'),
+                    ->placeholder('Enter the title'),
                 Forms\Components\TextInput::make('description')
                     ->label('Description')
                     ->required()
-                    ->placeholder('Enter the description of the power'),
-                Forms\Components\DateTimePicker::make('time')
-                    ->label('Time')
+                    ->placeholder('Enter the description'),
+                Forms\Components\DateTimePicker::make('status')
+                    ->label('Status')
                     ->required()
-                    ->placeholder('Enter the time of the power'),
+                    ->placeholder('Enter the status'),
             ]);
     }
 
@@ -43,13 +43,13 @@ class PowerResource extends Resource
         return $table
             ->columns([
                 //
-                Tables\Columns\TextColumn::make('title')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('time') 
+                Tables\Columns\TextColumn::make('status')
                     ->searchable()
                     ->sortable(),
             ])

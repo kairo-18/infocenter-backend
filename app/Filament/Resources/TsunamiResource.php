@@ -23,18 +23,18 @@ class TsunamiResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('message')
-                    ->label('Message')
+                Forms\Components\TextInput::make('name')
+                    ->label('Name')
                     ->required()
-                    ->placeholder('Enter the message of '),
-                Forms\Components\DateTimePicker::make('time')
-                    ->label('Time')
+                    ->placeholder('Enter the name of '),
+                Forms\Components\TextInput::make('description')
+                    ->label('description')
                     ->required()
-                    ->placeholder('Enter the time of the tsunami'),
-                Forms\Components\TextInput::make('source')
-                    ->label('Source')
+                    ->placeholder('Enter the description of the tsunami'),
+                Forms\Components\TextInput::make('severity')
+                    ->label('Severity')
                     ->required()
-                    ->placeholder('Enter the source of the tsunami'),
+                    ->placeholder('Enter the severity of the tsunami'),
             ]);
     }
 
@@ -42,13 +42,13 @@ class TsunamiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('message')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('time')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('source')
+                Tables\Columns\TextColumn::make('severity')
                     ->searchable()
                     ->sortable(),
             ])

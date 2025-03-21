@@ -32,9 +32,6 @@ class FloodResource extends Resource
                 Forms\Components\TextInput::make('severity')
                     ->label('Severity')
                     ->required(),
-                Forms\Components\DatePicker::make('date')
-                    ->label('Date')
-                    ->required(),
             ]);
     }
 
@@ -49,9 +46,6 @@ class FloodResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('severity')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('date')
                     ->searchable()
                     ->sortable(),
             ])

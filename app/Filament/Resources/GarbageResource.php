@@ -23,20 +23,10 @@ class GarbageResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')->required(),
+                Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\Textarea::make('description'),
-                Forms\Components\Select::make('day')
-                    ->options([
-                        'Monday' => 'Monday',
-                        'Tuesday' => 'Tuesday',
-                        'Wednesday' => 'Wednesday',
-                        'Thursday' => 'Thursday',
-                        'Friday' => 'Friday',
-                        'Saturday' => 'Saturday',
-                        'Sunday' => 'Sunday',
-                    ])
-                    ->required(),
-                Forms\Components\TimePicker::make('time')->required(),
+                Forms\Components\TextInput::make('status')->required(),
+                Forms\Components\DateTimePicker::make('time')->required(),
             ]);
     }
 
@@ -44,9 +34,9 @@ class GarbageResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('description')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('day')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('status')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('time')->searchable()->sortable(),
             ])
             ->filters([
