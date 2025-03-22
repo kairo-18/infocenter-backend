@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FloodResource\Pages;
-use App\Filament\Resources\FloodResource\RelationManagers;
-use App\Models\Flood;
+use App\Filament\Resources\FirstAidResource\Pages;
+use App\Filament\Resources\FirstAidResource\RelationManagers;
+use App\Models\FirstAid;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FloodResource extends Resource
+class FirstAidResource extends Resource
 {
-    protected static ?string $model = Flood::class;
+    protected static ?string $model = FirstAid::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,15 +23,15 @@ class FloodResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Name')
-                    ->required(),
-                Forms\Components\TextInput::make('description')
-                    ->label('Description')
-                    ->required(),
-                Forms\Components\TextInput::make('severity')
-                    ->label('Severity')
-                    ->required(),
+            Forms\Components\TextInput::make('name')
+                ->label('Name')
+                ->required(),
+            Forms\Components\TextInput::make('description')
+                ->label('Description')
+                ->required(),
+            Forms\Components\TextInput::make('link')
+                ->label('Video Link')
+                ->required(),
             ]);
     }
 
@@ -45,7 +45,7 @@ class FloodResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('severity')
+                Tables\Columns\TextColumn::make('link')
                     ->searchable()
                     ->sortable(),
             ])
@@ -58,7 +58,7 @@ class FloodResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -73,9 +73,9 @@ class FloodResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFloods::route('/'),
-            'create' => Pages\CreateFlood::route('/create'),
-            'edit' => Pages\EditFlood::route('/{record}/edit'),
+            'index' => Pages\ListFirstAids::route('/'),
+            'create' => Pages\CreateFirstAid::route('/create'),
+            'edit' => Pages\EditFirstAid::route('/{record}/edit'),
         ];
     }
 }

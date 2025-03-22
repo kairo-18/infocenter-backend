@@ -10,6 +10,10 @@ use App\Http\Controllers\GarbageController;
 use App\Http\Controllers\PowerController;
 use App\Http\Controllers\TsunamiController;
 use App\Http\Controllers\ShelterController;
+use App\Http\Controllers\FireController;
+use App\Http\Controllers\FirstAidController;
+use App\Http\Controllers\TrafficController;
+use App\Http\Controllers\UtilityController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -27,6 +31,9 @@ Route::get('/get-tsunamis', [TsunamiController::class, 'getTsunamis']);
 Route::get('/get-floods', [FloodController::class, 'getFloods']);
 Route::get('/get-garbage-collection', [GarbageController::class, 'getGarbage']);
 Route::get('/get-pharmacies', [PharmacyController::class, 'getPharmacies']);
-
+Route::get('/get-traffic', [TrafficController::class, 'getTraffic']);
+Route::get('/get-fire', [FireController::class, 'getFire']);
+Route::get('/get-first-aid', [FirstAidController::class, 'getFirstAid']);
+Route::get('/get-utility', [UtilityController::class, 'getUtility']);
 
 

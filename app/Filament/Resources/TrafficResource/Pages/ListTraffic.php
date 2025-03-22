@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PowerResource\Pages;
+namespace App\Filament\Resources\TrafficResource\Pages;
 
-use App\Filament\Resources\PowerResource;
+use App\Filament\Resources\TrafficResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListPowers extends ListRecords
+class ListTraffic extends ListRecords
 {
-    protected static string $resource = PowerResource::class;
+    protected static string $resource = TrafficResource::class;
 
     protected function getHeaderActions(): array
     {
