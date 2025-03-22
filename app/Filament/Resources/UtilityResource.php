@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PowerResource\Pages;
-use App\Filament\Resources\PowerResource\RelationManagers;
-use App\Models\Power;
+use App\Filament\Resources\UtilityResource\Pages;
+use App\Filament\Resources\UtilityResource\RelationManagers;
+use App\Models\Utility;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PowerResource extends Resource
+class UtilityResource extends Resource
 {
-    protected static ?string $model = Power::class;
+    protected static ?string $model = Utility::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -31,10 +31,16 @@ class PowerResource extends Resource
                     ->label('Description')
                     ->required()
                     ->placeholder('Enter the description'),
-                Forms\Components\DateTimePicker::make('status')
-                    ->label('Status')
-                    ->required()
-                    ->placeholder('Enter the status'),
+                    Forms\Components\Select::make('status')
+                    ->label('Utility Status')
+                    ->options([
+                        'option1'=>'Ongoing',
+                        'option2'=>'Resolved'
+                    ])
+                    ->required(),
+                Forms\Components\DateTimePicker::make('date')
+                    ->label('Date')
+                    ->required(),
             ]);
     }
 
@@ -50,6 +56,14 @@ class PowerResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label('Fire Status')
+                    ->sortable()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'option1' => 'Ongoing',
+                        'option2' => 'Resolved',
+                        default => 'Unknown',
+                    }),
+                Tables\Columns\TextColumn::make('date')
                     ->searchable()
                     ->sortable(),
             ])
@@ -77,9 +91,9 @@ class PowerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPowers::route('/'),
-            'create' => Pages\CreatePower::route('/create'),
-            'edit' => Pages\EditPower::route('/{record}/edit'),
+            'index' => Pages\ListUtility::route('/'),
+            'create' => Pages\CreateUtility::route('/create'),
+            'edit' => Pages\EditUtility::route('/{record}/edit'),
         ];
     }
 }
