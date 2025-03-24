@@ -38,11 +38,15 @@ class PharmacyResource extends Resource
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
                     ->required()
-                    ->placeholder('Enter the latitude of the pharmacy'),
+                    ->numeric() 
+                    ->rule('between:-90,90') 
+                    ->placeholder('Enter latitude (-90 to 90)'),
                 Forms\Components\TextInput::make('longitude')
                     ->label('Longitude')
                     ->required()
-                    ->placeholder('Enter the longitude of the pharmacy'),
+                    ->numeric()
+                    ->rule('between:-180,180') 
+                    ->placeholder('Enter longitude (-180 to 180)'),
                 Forms\Components\TextInput::make('locationLink')
                     ->label('Location Link')
                     ->required()
@@ -64,11 +68,13 @@ class PharmacyResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
+                    ->sortable()
                     ->searchable()
-                    ->sortable(),
+                    ->formatStateUsing(fn ($state) => number_format($state, 8)),
                 Tables\Columns\TextColumn::make('longitude')
+                    ->sortable()
                     ->searchable()
-                    ->sortable(),
+                    ->formatStateUsing(fn ($state) => number_format($state, 8)), 
                 Tables\Columns\TextColumn::make('locationLink')
                     ->searchable()
                     ->sortable(),
