@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
 
 class ShelterResource extends Resource
 {
@@ -38,6 +39,11 @@ class ShelterResource extends Resource
                     ->numeric() 
                     ->rule('between:-90,90') 
                     ->placeholder('Enter latitude (-90 to 90)'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('pharmacies')
+                    ->visibility('public')
+                    ->required(),
                 Forms\Components\TextInput::make('longitude')
                     ->label('Longitude')
                     ->required()
@@ -63,6 +69,9 @@ class ShelterResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('latitude')
                 ->sortable()
                 ->searchable()

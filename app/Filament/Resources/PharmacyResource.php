@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
 
 class PharmacyResource extends Resource
 {
@@ -31,6 +32,11 @@ class PharmacyResource extends Resource
                     ->label('Address')
                     ->required()
                     ->placeholder('Enter the address of the pharmacy'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('pharmacies')
+                    ->visibility('public')
+                    ->required(),
                 Forms\Components\Textarea::make('description')
                     ->label('Description')
                     ->required()
@@ -64,6 +70,9 @@ class PharmacyResource extends Resource
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
