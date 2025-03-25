@@ -36,6 +36,7 @@ Route::get('/get-traffic', [TrafficController::class, 'getTraffic']);
 Route::get('/get-fire', [FireController::class, 'getFire']);
 Route::get('/get-first-aid', [FirstAidController::class, 'getFirstAid']);
 Route::get('/get-utility', [UtilityController::class, 'getUtility']);
+Route::get('/get-sms-alerts', [SmsController::class, 'getSmsAlerts']);
 
 Route::get('/get-sms-registration', [SmsAlertRegistrationController::class , 'getSmsRegistration']);
 Route::post('/register-sms', [SmsAlertRegistrationController::class, 'create']);
