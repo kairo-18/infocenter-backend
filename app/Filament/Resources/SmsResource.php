@@ -36,9 +36,12 @@ class SmsResource extends Resource
                             ->label('Type')
                             ->options([
                                 'Flood' => 'Flood',
-                                'Power' => 'Power',
-                                'Water' => "Water",
-                                'Shelter' => 'Shelter'
+                                'General' => "General",
+                                'Fire' => "Fire",
+                                'Garbage' => "Garbage",
+                                'Traffic' => "Traffic",
+                                'Tsunami' => "Tsunami",
+                                'Utility' => "Utility",
                             ])
                             ->searchable() // Enables search inside the dropdown
                             ->native(false) // Uses a custom dropdown style
