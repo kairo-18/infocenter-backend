@@ -41,7 +41,7 @@ class SmsResource extends Resource
                                 'Garbage' => "Garbage",
                                 'Traffic' => "Traffic",
                                 'Tsunami' => "Tsunami",
-                                'Utility' => "Utility",
+                                'Utilities' => "Utilities",
                             ])
                             ->searchable() // Enables search inside the dropdown
                             ->native(false) // Uses a custom dropdown style

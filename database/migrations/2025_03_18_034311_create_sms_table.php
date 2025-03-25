@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('sms', function (Blueprint $table) {
             $table->id();
             $table->string('message');
-            $table->enum('type', ['Flood', 'Water', 'Power', 'Shelter', 'Garbage', 'Tsunami', 'Pharmacy', 'Announcement'])->default('Announcement');
+            $table->enum('type', ['Flood', 'Garbage', 'Tsunami', 'Announcement','Fire', 'Traffic', 'General', 'Utilities'])->default('General');
             $table->timestamps();
         });
     }

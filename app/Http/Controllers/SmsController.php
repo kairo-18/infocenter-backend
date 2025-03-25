@@ -33,4 +33,10 @@ class SmsController extends Controller
             Log::error('Failed to send SMS');
         }
     }
+
+    public function getSmsAlerts()
+    {
+        $smsAlerts = Sms::all();
+        return response()->json($smsAlerts);
+    }
 }
