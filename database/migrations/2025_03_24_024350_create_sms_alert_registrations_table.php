@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pharmacies', function (Blueprint $table) {
+        Schema::create('sms_alert_registrations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('address');
-            $table->string('image')->nullable();
-            $table->string('description');
-            $table->string('locationLink');
-            $table->decimal('latitude', 10, 8);
-            $table->decimal('longitude', 11, 8);
+            $table->string('LastName');
+            $table->string('FirstName');
+            $table->string('MiddleName')->nullable();
+            $table->string('email', 255)->unique();
+            $table->string('ContactNumber',12);
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pharmacies');
+        Schema::dropIfExists('sms_alert_registrations');
     }
 };

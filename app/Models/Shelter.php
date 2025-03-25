@@ -11,6 +11,7 @@ class Shelter extends Model
         'name',
         'address',
         'description',
+        'image',
         'latitude',
         'longitude',
         'locationLink'

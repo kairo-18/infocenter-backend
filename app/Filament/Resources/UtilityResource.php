@@ -34,8 +34,8 @@ class UtilityResource extends Resource
                     Forms\Components\Select::make('status')
                     ->label('Utility Status')
                     ->options([
-                        'option1'=>'Ongoing',
-                        'option2'=>'Resolved'
+                        'Ongoing'=>'Ongoing',
+                        'Resolved'=>'Resolved'
                     ])
                     ->required(),
                 Forms\Components\DateTimePicker::make('date')
@@ -59,8 +59,8 @@ class UtilityResource extends Resource
                     ->label('Fire Status')
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'option1' => 'Ongoing',
-                        'option2' => 'Resolved',
+                        'Ongoing' => 'Ongoing',
+                        'Resolved' => 'Resolved',
                         default => 'Unknown',
                     }),
                 Tables\Columns\TextColumn::make('date')

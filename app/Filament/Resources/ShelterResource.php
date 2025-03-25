@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
 
 class ShelterResource extends Resource
 {
@@ -34,10 +35,21 @@ class ShelterResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
+                    ->required()
+                    ->numeric() 
+                    ->rule('between:-90,90') 
+                    ->placeholder('Enter latitude (-90 to 90)'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('pharmacies')
+                    ->visibility('public')
                     ->required(),
                 Forms\Components\TextInput::make('longitude')
                     ->label('Longitude')
-                    ->required(),
+                    ->required()
+                    ->numeric()
+                    ->rule('between:-180,180') 
+                    ->placeholder('Enter longitude (-180 to 180)'),
                 Forms\Components\TextInput::make('locationLink')
                     ->label('Location Link')
                     ->required(),
@@ -57,12 +69,17 @@ class ShelterResource extends Resource
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->searchable()
-                    ->sortable(),
+                ->sortable()
+                ->searchable()
+                ->formatStateUsing(fn ($state) => number_format($state, 8)),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->searchable()
-                    ->sortable(),
+                ->sortable()
+                ->searchable()
+                ->formatStateUsing(fn ($state) => number_format($state, 8)),                            
                 Tables\Columns\TextColumn::make('locationLink')
                     ->searchable()
                     ->sortable(),

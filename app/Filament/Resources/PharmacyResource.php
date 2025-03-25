@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\FileUpload;
 
 class PharmacyResource extends Resource
 {
@@ -31,6 +32,11 @@ class PharmacyResource extends Resource
                     ->label('Address')
                     ->required()
                     ->placeholder('Enter the address of the pharmacy'),
+                Forms\Components\FileUpload::make('image')
+                    ->image()
+                    ->directory('pharmacies')
+                    ->visibility('public')
+                    ->required(),
                 Forms\Components\Textarea::make('description')
                     ->label('Description')
                     ->required()
@@ -38,11 +44,15 @@ class PharmacyResource extends Resource
                 Forms\Components\TextInput::make('latitude')
                     ->label('Latitude')
                     ->required()
-                    ->placeholder('Enter the latitude of the pharmacy'),
+                    ->numeric() 
+                    ->rule('between:-90,90') 
+                    ->placeholder('Enter latitude (-90 to 90)'),
                 Forms\Components\TextInput::make('longitude')
                     ->label('Longitude')
                     ->required()
-                    ->placeholder('Enter the longitude of the pharmacy'),
+                    ->numeric()
+                    ->rule('between:-180,180') 
+                    ->placeholder('Enter longitude (-180 to 180)'),
                 Forms\Components\TextInput::make('locationLink')
                     ->label('Location Link')
                     ->required()
@@ -60,15 +70,20 @@ class PharmacyResource extends Resource
                 Tables\Columns\TextColumn::make('address')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->circular(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('latitude')
+                    ->sortable()
                     ->searchable()
-                    ->sortable(),
+                    ->formatStateUsing(fn ($state) => number_format($state, 8)),
                 Tables\Columns\TextColumn::make('longitude')
+                    ->sortable()
                     ->searchable()
-                    ->sortable(),
+                    ->formatStateUsing(fn ($state) => number_format($state, 8)), 
                 Tables\Columns\TextColumn::make('locationLink')
                     ->searchable()
                     ->sortable(),

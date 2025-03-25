@@ -12,7 +12,7 @@ class UtilityController extends Controller
      */
     public function getUtility()
     {
-        $$utility = Utiity::all();
+        $utility = Utility::all();
         return response()->json($utility);
     }
 

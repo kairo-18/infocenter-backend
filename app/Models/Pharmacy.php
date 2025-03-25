@@ -10,6 +10,7 @@ class Pharmacy extends Model
         'name',
         'address',
         'description',
+        'image',
         'latitude',
         'longitude',
         'locationLink'
