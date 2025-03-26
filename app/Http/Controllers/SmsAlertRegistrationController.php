@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\SmsAlertRegistration;
 
-class SmsAlertRegistration extends Controller
+class SmsAlertRegistrationController extends Controller
 {
     public function getSmsRegistration()
     {
