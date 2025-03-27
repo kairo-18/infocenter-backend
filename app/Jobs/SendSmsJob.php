@@ -24,7 +24,7 @@ class SendSmsJob implements ShouldQueue
 
     public function handle()
     {
-        $response = Http::post('http://localhost:8000/api/send-sms-all', [
+        $response = Http::post('https://infocenter-dampalit.site/api/send-sms-all', [
             'type' => $this->sms->type,
             'message' => $this->sms->message,
         ]);

@@ -7,9 +7,12 @@ services:
         restart: unless-stopped
         ports:
             - "80:80"
+            - "443:443"
         volumes:
             - .:/var/www
             - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - /etc/letsencrypt:/etc/letsencrypt:ro
+            - /var/lib/letsencrypt:/var/lib/letsencrypt:ro
         depends_on:
             - infocenter-backend
         networks:
@@ -23,6 +26,20 @@ services:
         volumes:
             - .:/var/www
         depends_on:
+            - db
+        networks:
+            - laravel
+
+    queue:
+        build: .
+        container_name: infocenter-queue
+        restart: unless-stopped
+        working_dir: /var/www
+        command: php artisan queue:work --tries=3 --timeout=90
+        volumes:
+            - .:/var/www
+        depends_on:
+            - infocenter-backend
             - db
         networks:
             - laravel
@@ -48,3 +65,4 @@ networks:
 
 volumes:
     db_data:
+
