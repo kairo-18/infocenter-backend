@@ -35,6 +35,9 @@ class TsunamiResource extends Resource
                     ->label('Severity')
                     ->required()
                     ->placeholder('Enter the severity of the tsunami'),
+                Forms\Components\DateTimePicker::make('date')
+                    ->label('Date')
+                    ->required(),
             ]);
     }
 
@@ -49,6 +52,9 @@ class TsunamiResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('severity')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date')
                     ->searchable()
                     ->sortable(),
             ])
