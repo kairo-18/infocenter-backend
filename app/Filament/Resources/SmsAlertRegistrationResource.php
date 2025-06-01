@@ -41,15 +41,17 @@ class SmsAlertRegistrationResource extends Resource
 
             Forms\Components\TextInput::make('email')
                 ->label('Email')
-                ->email() 
+                ->email()
                 ->required()
+                ->unique(SmsAlertRegistration::class, 'email', ignorable: fn (?SmsAlertRegistration $record) => $record)
                 ->maxLength(255),
 
             Forms\Components\TextInput::make('ContactNumber')
                 ->label('Contact Number')
                 ->required()
-                ->maxLength(12) 
-                ->numeric(), 
+                ->unique(SmsAlertRegistration::class, 'ContactNumber', ignorable: fn (?SmsAlertRegistration $record) => $record)
+                ->maxLength(12)
+                ->numeric(),
             ]);
     }
 
