@@ -49,7 +49,7 @@ class ChartController extends Controller
         $html = view('pdf.chart', [
             'datasets' => $data['datasets'],
             'labels' => $data['labels'],
-            'heading' => 'Models Analytics',
+            'heading' => 'Announcements Analytics',
             'filter' => $filter,
             'filterLabel' => $this->getFilterLabel($filter),
             'colors' => $this->colors,
@@ -61,6 +61,202 @@ class ChartController extends Controller
             ->setOption('isRemoteEnabled', true);
 
         return $pdf->download("models-analytics-{$filter}-".now()->format('Y-m-d').'.pdf');
+    }
+
+    public function downloadCustomDatePdf(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = Carbon::parse($request->start_date)->startOfDay();
+        $endDate = Carbon::parse($request->end_date)->endOfDay();
+
+        $data = $this->getCustomDateRangeData($startDate, $endDate);
+
+        // Generate chart image
+        $chartImageUrl = $this->generateChartImage($data['datasets'], $data['labels'], 'custom');
+
+        $filterLabel = "From {$startDate->format('M j, Y')} to {$endDate->format('M j, Y')}";
+
+        $html = view('pdf.chart', [
+            'datasets' => $data['datasets'],
+            'labels' => $data['labels'],
+            'heading' => 'Announcements Analytics',
+            'filter' => 'custom',
+            'filterLabel' => $filterLabel,
+            'colors' => $this->colors,
+            'chartImageUrl' => $chartImageUrl,
+        ])->render();
+
+        $pdf = Pdf::loadHTML($html)
+            ->setPaper('a4', 'landscape')
+            ->setOption('isRemoteEnabled', true);
+
+        $filename = "models-analytics-custom-{$startDate->format('Y-m-d')}-to-{$endDate->format('Y-m-d')}.pdf";
+
+        return $pdf->download($filename);
+    }
+
+    private function getCustomDateRangeData(Carbon $startDate, Carbon $endDate): array
+    {
+        $datasets = [];
+        $colorIndex = 0;
+
+        // Calculate the number of days and determine appropriate grouping
+        $daysDiff = $startDate->diffInDays($endDate);
+
+        if ($daysDiff <= 31) {
+            // Daily grouping for periods up to 31 days
+            return $this->getDailyData($startDate, $endDate);
+        } elseif ($daysDiff <= 365) {
+            // Weekly grouping for periods up to 1 year
+            return $this->getWeeklyData($startDate, $endDate);
+        } else {
+            // Monthly grouping for periods over 1 year
+            return $this->getMonthlyDataCustomRange($startDate, $endDate);
+        }
+    }
+
+    private function getDailyData(Carbon $startDate, Carbon $endDate): array
+    {
+        $datasets = [];
+        $labels = [];
+        $colorIndex = 0;
+
+        // Generate labels (dates)
+        $currentDate = $startDate->copy();
+        while ($currentDate->lte($endDate)) {
+            $labels[] = $currentDate->format('M j');
+            $currentDate->addDay();
+        }
+
+        foreach ($this->models as $modelName => $modelClass) {
+            $dailyData = [];
+            $currentDate = $startDate->copy();
+
+            while ($currentDate->lte($endDate)) {
+                $count = $modelClass::whereDate('created_at', $currentDate)->count();
+                $dailyData[] = $count;
+                $currentDate->addDay();
+            }
+
+            $datasets[] = [
+                'label' => $modelName,
+                'data' => $dailyData,
+                'borderColor' => $this->colors[$colorIndex % count($this->colors)],
+                'backgroundColor' => $this->colors[$colorIndex % count($this->colors)].'20',
+                'total' => array_sum($dailyData),
+            ];
+
+            $colorIndex++;
+        }
+
+        return [
+            'datasets' => $datasets,
+            'labels' => $labels,
+        ];
+    }
+
+    private function getWeeklyData(Carbon $startDate, Carbon $endDate): array
+    {
+        $datasets = [];
+        $labels = [];
+        $colorIndex = 0;
+
+        // Generate weekly periods
+        $currentDate = $startDate->copy()->startOfWeek();
+        while ($currentDate->lt($endDate)) {
+            $weekEnd = $currentDate->copy()->endOfWeek();
+            if ($weekEnd->gt($endDate)) {
+                $weekEnd = $endDate->copy();
+            }
+
+            $labels[] = $currentDate->format('M j').' - '.$weekEnd->format('M j');
+            $currentDate->addWeek();
+        }
+
+        foreach ($this->models as $modelName => $modelClass) {
+            $weeklyData = [];
+            $currentDate = $startDate->copy()->startOfWeek();
+
+            while ($currentDate->lt($endDate)) {
+                $weekEnd = $currentDate->copy()->endOfWeek();
+                if ($weekEnd->gt($endDate)) {
+                    $weekEnd = $endDate->copy();
+                }
+
+                $count = $modelClass::whereBetween('created_at', [$currentDate, $weekEnd])->count();
+                $weeklyData[] = $count;
+                $currentDate->addWeek();
+            }
+
+            $datasets[] = [
+                'label' => $modelName,
+                'data' => $weeklyData,
+                'borderColor' => $this->colors[$colorIndex % count($this->colors)],
+                'backgroundColor' => $this->colors[$colorIndex % count($this->colors)].'20',
+                'total' => array_sum($weeklyData),
+            ];
+
+            $colorIndex++;
+        }
+
+        return [
+            'datasets' => $datasets,
+            'labels' => $labels,
+        ];
+    }
+
+    private function getMonthlyDataCustomRange(Carbon $startDate, Carbon $endDate): array
+    {
+        $datasets = [];
+        $labels = [];
+        $colorIndex = 0;
+
+        // Generate monthly periods
+        $currentDate = $startDate->copy()->startOfMonth();
+        while ($currentDate->lte($endDate)) {
+            $monthEnd = $currentDate->copy()->endOfMonth();
+            if ($monthEnd->gt($endDate)) {
+                $monthEnd = $endDate->copy();
+            }
+
+            $labels[] = $currentDate->format('M Y');
+            $currentDate->addMonth();
+        }
+
+        foreach ($this->models as $modelName => $modelClass) {
+            $monthlyData = [];
+            $currentDate = $startDate->copy()->startOfMonth();
+
+            while ($currentDate->lte($endDate)) {
+                $monthEnd = $currentDate->copy()->endOfMonth();
+                if ($monthEnd->gt($endDate)) {
+                    $monthEnd = $endDate->copy();
+                }
+
+                $count = $modelClass::whereBetween('created_at', [$currentDate, $monthEnd])->count();
+                $monthlyData[] = $count;
+                $currentDate->addMonth();
+            }
+
+            $datasets[] = [
+                'label' => $modelName,
+                'data' => $monthlyData,
+                'borderColor' => $this->colors[$colorIndex % count($this->colors)],
+                'backgroundColor' => $this->colors[$colorIndex % count($this->colors)].'20',
+                'total' => array_sum($monthlyData),
+            ];
+
+            $colorIndex++;
+        }
+
+        return [
+            'datasets' => $datasets,
+            'labels' => $labels,
+        ];
     }
 
     private function generateChartImage(array $datasets, array $labels, string $filter): string
@@ -83,6 +279,8 @@ class ChartController extends Controller
             ];
         }
 
+        $chartTitle = $filter === 'custom' ? 'Models Analytics - Custom Date Range' : 'Models Analytics - '.$this->getFilterLabel($filter);
+
         $chartConfig = [
             'type' => 'line',
             'data' => [
@@ -94,7 +292,7 @@ class ChartController extends Controller
                 'plugins' => [
                     'title' => [
                         'display' => true,
-                        'text' => 'Models Analytics - '.$this->getFilterLabel($filter),
+                        'text' => $chartTitle,
                         'font' => [
                             'size' => 18,
                             'weight' => 'bold',
@@ -169,14 +367,7 @@ class ChartController extends Controller
         return $chartUrl;
     }
 
-    // Alternative method using local chart generation (requires node.js)
-    private function generateChartImageLocal(array $datasets, array $labels, string $filter): string
-    {
-        // This method would require a Node.js service or puppeteer
-        // For now, we'll use the QuickChart API method above
-        return $this->generateChartImage($datasets, $labels, $filter);
-    }
-
+    // Keep existing methods for backward compatibility
     private function getChartData(string $filter): array
     {
         switch ($filter) {
