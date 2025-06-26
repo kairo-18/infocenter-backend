@@ -184,7 +184,7 @@
     </div>
 
     <div class="footer">
-        <p>Models Analytics Report | Generated from Filament Dashboard</p>
+        <p>Announcements Analytics Report | Generated from Filament Dashboard</p>
         <p>Report covers {{ $filterLabel }} ending {{ now()->format('F j, Y') }}</p>
     </div>
 </body>
