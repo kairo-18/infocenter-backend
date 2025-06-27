@@ -21,6 +21,7 @@ class ChartController extends Controller
         'Traffic' => Traffic::class,
         'Tsunami' => Tsunami::class,
         'Utility' => Utility::class,
+        'User Alert Registration' => \App\Models\SmsAlertRegistration::class,
     ];
 
     private array $colors = [
@@ -30,6 +31,7 @@ class ChartController extends Controller
         '#f59e0b', // yellow
         '#8b5cf6', // purple
         '#06b6d4', // cyan
+        '#f97316', // orange
     ];
 
     public function downloadPdf(Request $request)
@@ -49,7 +51,7 @@ class ChartController extends Controller
         $html = view('pdf.chart', [
             'datasets' => $data['datasets'],
             'labels' => $data['labels'],
-            'heading' => 'Announcements Analytics',
+            'heading' => 'Analytics',
             'filter' => $filter,
             'filterLabel' => $this->getFilterLabel($filter),
             'colors' => $this->colors,
@@ -83,7 +85,7 @@ class ChartController extends Controller
         $html = view('pdf.chart', [
             'datasets' => $data['datasets'],
             'labels' => $data['labels'],
-            'heading' => 'Announcements Analytics',
+            'heading' => 'Analytics',
             'filter' => 'custom',
             'filterLabel' => $filterLabel,
             'colors' => $this->colors,
