@@ -39,6 +39,7 @@ class ModelsAnalyticsChart extends ChartWidget
             'Traffic' => Traffic::class,
             'Tsunami' => Tsunami::class,
             'Utility' => Utility::class,
+            'User Alert Registration' => \App\Models\SmsAlertRegistration::class,
         ];
 
         $data = [];
@@ -80,6 +81,7 @@ class ModelsAnalyticsChart extends ChartWidget
             '#f59e0b', // yellow
             '#8b5cf6', // purple
             '#06b6d4', // cyan
+            '#f97316', // pink
         ];
 
         $colorIndex = 0;
