@@ -29,8 +29,6 @@ class GarbageResource extends Resource
                     ->offColor('danger')
                     ->onIcon('heroicon-o-fire')
                     ->offIcon('heroicon-o-check')
-                    ->afterStateHydrated(fn ($component, $state) => $component->state($state === 'Active')) // Convert from DB value
-                    ->dehydrateStateUsing(fn ($state) => $state ? 'Active' : 'Inactive') // Convert to DB value
                     ->default('Active'), // Optional default
                 Forms\Components\DateTimePicker::make('time')->required(),
             ]);
