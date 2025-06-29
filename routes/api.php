@@ -51,10 +51,20 @@ Route::get('/get-recent-announcements', function () {
         // Helper function to format each item
         $formatItem = function ($model, $tag) {
             $record = $model::latest()->first();
+            if (! $record) {
+                return ['tag' => $tag, 'message' => 'No announcement yet'];
+            }
 
-            return $record
-                ? array_merge($record->toArray(), ['tag' => $tag])
-                : ['tag' => $tag, 'message' => 'No announcement yet'];
+            $data = $record->toArray();
+
+            // Convert status from 1/0 to Active/Inactive
+            if (isset($data['status'])) {
+                $data['status'] = ($data['status'] == 1 || $data['status'] === true || $data['status'] === '1')
+                    ? 'Active'
+                    : 'Inactive';
+            }
+
+            return array_merge($data, ['tag' => $tag]);
         };
 
         $allData = [
@@ -68,14 +78,14 @@ Route::get('/get-recent-announcements', function () {
 
         // Filter out inactive records from the response
         $recentData = array_filter($allData, function ($item) {
-            // If it's a "No announcement yet" message, keep it
+            // If it's a "No announcement yet" message, exclude it
             if (isset($item['message'])) {
-                return false; // you said you want to remove inactive/no announcements
+                return false;
             }
 
             $status = $item['status'] ?? null;
 
-            return $status === 'Active' || $status === true || $status === 1 || $status === '1';
+            return $status === 'Active';
         });
 
         // Re-index the array
