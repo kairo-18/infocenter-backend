@@ -59,7 +59,7 @@ Route::get('/get-recent-announcements', function () {
 
             // Convert status from 1/0 to Active/Inactive
             if (isset($data['status'])) {
-                $data['status'] = ($data['status'] == 1 || $data['status'] === true || $data['status'] === '1')
+                $data['status'] = ($data['status'] == 1 || $data['status'] === true || $data['status'] === '1' || $datap$a['status'] === 'Active')
                     ? 'Active'
                     : 'Inactive';
             }
