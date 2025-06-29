@@ -48,7 +48,6 @@ Route::post('/register-sms', [SmsAlertRegistrationController::class, 'create']);
 
 Route::get('/get-recent-announcements', function () {
     try {
-        // Get the most recent record from each model
         // Helper function to format each item
         $formatItem = function ($model, $tag) {
             $record = $model::latest()->first();
@@ -58,7 +57,7 @@ Route::get('/get-recent-announcements', function () {
                 : ['tag' => $tag, 'message' => 'No announcement yet'];
         };
 
-        $recentData = [
+        $allData = [
             $formatItem(Fire::class, 'fire'),
             $formatItem(Flood::class, 'flood'),
             $formatItem(Tsunami::class, 'tsunami'),
@@ -67,17 +66,31 @@ Route::get('/get-recent-announcements', function () {
             $formatItem(Utility::class, 'utility'),
         ];
 
+        // Filter out inactive records from the response
+        $recentData = array_filter($allData, function ($item) {
+            // If it's a "No announcement yet" message, keep it
+            if (isset($item['message'])) {
+                return false; // you said you want to remove inactive/no announcements
+            }
+
+            $status = $item['status'] ?? null;
+
+            return $status === 'Active' || $status === true || $status === 1 || $status === '1';
+        });
+
+        // Re-index the array
+        $recentData = array_values($recentData);
+
         return response()->json([
             'success' => true,
-            'message' => 'Recent data retrieved successfully',
+            'message' => 'Recent active data retrieved successfully',
             'data' => $recentData,
             'timestamp' => now()->toISOString(),
         ]);
-
     } catch (\Exception $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Failed to retrieve recent data',
+            'message' => 'Failed to retrieve recent active data',
             'error' => $e->getMessage(),
         ], 500);
     }

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FireResource\Pages;
-use App\Filament\Resources\FireResource\RelationManagers;
 use App\Models\Fire;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FireResource extends Resource
 {
@@ -32,14 +29,13 @@ class FireResource extends Resource
                 Forms\Components\DateTimePicker::make('date')
                     ->label('Date')
                     ->required(),
-                Forms\Components\Select::make('status')
+                Forms\Components\Toggle::make('status')
                     ->label('Fire Status')
-                    ->options([
-                        'option1'=>'Ongoing',
-                        'option2'=>'Fire Out'
-                    ])
-                    ->required(),
-                
+                    ->inline(false)
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-fire')
+                    ->offIcon('heroicon-o-check'),
             ]);
     }
 
@@ -60,8 +56,8 @@ class FireResource extends Resource
                     ->label('Fire Status')
                     ->sortable()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'option1' => 'Ongoing',
-                        'option2' => 'Fire Out',
+                        '0' => 'Inactive',
+                        '1' => 'Active',
                         default => 'Unknown',
                     }),
             ])
@@ -70,7 +66,7 @@ class FireResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

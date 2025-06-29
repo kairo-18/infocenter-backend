@@ -142,7 +142,7 @@
         <thead>
             <tr>
                 <th>Category</th>
-                <th>Total Incidents</th>
+                <th>Total Recurrence</th>
                 <th>Average per Period</th>
                 <th>Highest Count</th>
                 <th>Lowest Count</th>
@@ -173,7 +173,7 @@
             $grandTotal = array_sum(array_column($datasets, 'total'));
             $avgPerPeriod = $grandTotal / count($labels);
         @endphp
-        <p><strong>Total Incidents:</strong> {{ number_format($grandTotal) }}</p>
+        <p><strong>Total Recurrence:</strong> {{ number_format($grandTotal) }}</p>
         <p><strong>Average per Period:</strong> {{ number_format($avgPerPeriod, 1) }}</p>
         <p><strong>Most Active Category:</strong>
             @php
