@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('floods', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->string('severity');
-            $table->timestamp('date');
-            $table->timestamps();
+        Schema::table('floods', function (Blueprint $table) {
+            // boolean status column to indicate if the flood is active or not
+            $table->boolean('status')->nullable()->comment('Indicates if the flood is currently active');
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('floods');
+        Schema::table('floods', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\GarbageResource\Pages;
-use App\Filament\Resources\GarbageResource\RelationManagers;
 use App\Models\Garbage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GarbageResource extends Resource
 {
@@ -25,7 +22,14 @@ class GarbageResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\Textarea::make('description'),
-                Forms\Components\TextInput::make('status')->required(),
+                Forms\Components\Toggle::make('status')
+                    ->label('Garbage Status')
+                    ->inline(false)
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-fire')
+                    ->offIcon('heroicon-o-check')
+                    ->default('Active'), // Optional default
                 Forms\Components\DateTimePicker::make('time')->required(),
             ]);
     }
@@ -36,7 +40,12 @@ class GarbageResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('description')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('status')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('status')->searchable()->sortable()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        '0' => 'Inactive',
+                        '1' => 'Active',
+                        default => 'Unknown',
+                    }),
                 Tables\Columns\TextColumn::make('time')->searchable()->sortable(),
             ])
             ->filters([

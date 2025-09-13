@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Utility extends Model
 {
     //
-    protected $fillable = [ 'name', 'description', 'status', 'date'];
+    protected $fillable = ['name', 'description', 'status', 'date', 'status'];
 }

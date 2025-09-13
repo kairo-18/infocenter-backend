@@ -7,6 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Garbage extends Model
 {
     //
-    protected $fillable = ['name', 'description', 'status', 'time'];
-
+    protected $fillable = ['name', 'description', 'status', 'time', 'status'];
 }

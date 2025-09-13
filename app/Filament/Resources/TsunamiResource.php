@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TsunamiResource\Pages;
-use App\Filament\Resources\TsunamiResource\RelationManagers;
 use App\Models\Tsunami;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TsunamiResource extends Resource
 {
@@ -35,6 +32,16 @@ class TsunamiResource extends Resource
                     ->label('Severity')
                     ->required()
                     ->placeholder('Enter the severity of the tsunami'),
+                Forms\Components\Toggle::make('status')
+                    ->label('Tsunami Status')
+                    ->inline(false)
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-fire')
+                    ->offIcon('heroicon-o-check'),
+                Forms\Components\DateTimePicker::make('date')
+                    ->label('Date')
+                    ->required(),
             ]);
     }
 
@@ -51,6 +58,12 @@ class TsunamiResource extends Resource
                 Tables\Columns\TextColumn::make('severity')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('date')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->formatStateUsing(fn ($state): string => $state ? 'Active' : 'Inactive'),
+
             ])
             ->filters([
                 //

@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UtilityResource\Pages;
-use App\Filament\Resources\UtilityResource\RelationManagers;
 use App\Models\Utility;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UtilityResource extends Resource
 {
@@ -31,13 +28,16 @@ class UtilityResource extends Resource
                     ->label('Description')
                     ->required()
                     ->placeholder('Enter the description'),
-                    Forms\Components\Select::make('status')
+                Forms\Components\Toggle::make('status')
                     ->label('Utility Status')
-                    ->options([
-                        'Ongoing'=>'Ongoing',
-                        'Resolved'=>'Resolved'
-                    ])
-                    ->required(),
+                    ->inline(false)
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-fire')
+                    ->offIcon('heroicon-o-check')
+                    ->afterStateHydrated(fn ($component, $state) => $component->state($state === 'Active')) // Convert from DB value
+                    ->dehydrateStateUsing(fn ($state) => $state ? 'Active' : 'Inactive') // Convert to DB value
+                    ->default('Active'), // Optional default
                 Forms\Components\DateTimePicker::make('date')
                     ->label('Date')
                     ->required(),
@@ -56,13 +56,8 @@ class UtilityResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Fire Status')
-                    ->sortable()
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'Ongoing' => 'Ongoing',
-                        'Resolved' => 'Resolved',
-                        default => 'Unknown',
-                    }),
+                    ->label('Utility Status')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->searchable()
                     ->sortable(),

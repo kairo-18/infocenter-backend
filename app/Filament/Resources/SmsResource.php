@@ -78,6 +78,10 @@ class SmsResource extends Resource
                 Action::make('sendSms')
                     ->label('Send SMS')
                     ->icon('heroicon-o-paper-airplane')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm SMS Sending')
+                    ->modalDescription('Are you sure you want to send this SMS? This action cannot be undone.')
+                    ->modalButton('Yes, Send SMS')
                     ->action(fn (Sms $record) => self::sendSmsRequest($record)),
             ])
             ->bulkActions([

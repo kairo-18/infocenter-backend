@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 class Traffic extends Model
 {
     //
-    protected $fillable=['name', 'description', 'reason', 'date'];
+    protected $fillable = ['name', 'description', 'reason', 'date', 'status'];
 }

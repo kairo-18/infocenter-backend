@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FloodResource\Pages;
-use App\Filament\Resources\FloodResource\RelationManagers;
 use App\Models\Flood;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FloodResource extends Resource
 {
@@ -32,6 +29,10 @@ class FloodResource extends Resource
                 Forms\Components\TextInput::make('severity')
                     ->label('Severity')
                     ->required(),
+                Forms\Components\DateTimePicker::make('date')
+                    ->label('Date')
+                    ->required(),
+                Forms\Components\Toggle::make('status'),
             ]);
     }
 
@@ -46,6 +47,13 @@ class FloodResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('severity')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Flood Status')
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => $state ? 'Active' : 'Inactive'),
+                Tables\Columns\TextColumn::make('date')
                     ->searchable()
                     ->sortable(),
             ])
